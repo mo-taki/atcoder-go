@@ -19,21 +19,18 @@ func main() {
 	a := ni()
 	b := ni()
 
-	cnt := 0
-
-	sum := 0
+	ans := 0
 
 	for i := 1; i <= n; i++ {
-		sn := strconv.Itoa(i)
-		for _, v := range sn {
-			sum += int(v - '0')
+		sum := 0
+		for x := i; x > 0; x /= 10 {
+			sum += x % 10
 		}
-		if sum >= a && b >= sum {
-			cnt += i
+		if a <= sum && sum <= b {
+			ans += i
 		}
-		sum = 0
 	}
-	fmt.Fprintln(wr, cnt)
+	fmt.Fprintln(wr, ans)
 }
 
 func ns() string  { sc.Scan(); return sc.Text() }
