@@ -25,7 +25,7 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-	  show_full_output: "true"
+          show_full_output: "true"
           prompt: |
             このリポジトリはAtCoderの精進記録です。このPRのGoの解答コードをレビューして、PRにコメントしてください。
             - 学習目的なので、バグ指摘だけでなく「より定石的な書き方」「計算量の改善余地」があれば教えること
