@@ -1,0 +1,31 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            このリポジトリはAtCoderの精進記録です。このPRのGoの解答コードをレビューして、PRにコメントしてください。
+            - 学習目的なので、バグ指摘だけでなく「より定石的な書き方」「計算量の改善余地」があれば教えること
+            - テンプレート由来の未使用ヘルパー関数（ns, nf, nis, abs等）は指摘しないこと
+            - コメントは日本語で、初中級者向けに理由から説明すること
