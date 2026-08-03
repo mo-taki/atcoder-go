@@ -26,10 +26,10 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            このリポジトリはAtCoderの精進記録です。このPRのGoの解答コードをレビューして、PRにコメントしてください。
+            このリポジトリはAtCoderの精進記録です。PR #${{ github.event.pull_request.number }} のGoの解答コードをレビューしてください。
+            gh pr diff ${{ github.event.pull_request.number }} で差分を確認し、レビュー結果は必ず gh pr comment ${{ github.event.pull_request.number }} で投稿すること。指摘事項がない場合も「特に指摘なし」の旨とコードの良い点をコメントとして投稿すること。
             - 学習目的なので、バグ指摘だけでなく「より定石的な書き方」「計算量の改善余地」があれば教えること
             - テンプレート由来の未使用ヘルパー関数（ns, nf, nis, abs等）は指摘しないこと
             - コメントは日本語で、初中級者向けに理由から説明すること
-            - すでにこのPRに自分（claude）の過去のレビューコメントがある場合は gh pr view --comments で確認し、指摘済みの内容は繰り返さず、前回レビュー以降の変更点と未指摘の点のみコメントすること。
           claude_args: |
             --allowedTools "Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),mcp__github_inline_comment__create_inline_comment"
