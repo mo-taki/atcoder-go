@@ -27,7 +27,18 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             このリポジトリはAtCoderの精進記録です。PR #${{ github.event.pull_request.number }} のGoの解答コードをレビューしてください。
-            gh pr diff ${{ github.event.pull_request.number }} で差分を確認し、レビュー結果は必ず gh pr comment ${{ github.event.pull_request.number }} で投稿すること。指摘事項がない場合も「特に指摘なし」の旨とコードの良い点をコメントとして投稿すること。
+
+            手順:
+            1. gh pr view ${{ github.event.pull_request.number }} --comments で自分（claude）の過去のレビューコメントを確認する
+            2. gh pr diff ${{ github.event.pull_request.number }} で差分を確認する
+            3. 過去のレビューで既に指摘・言及したファイルは対象外とし、前回レビュー以降に追加・変更されたコードのみレビューする
+
+            投稿方法:
+            - コードの特定の行に対する指摘は、インラインコメント（create_inline_comment）で該当行に付けること
+            - 全体の総評（良い点・まとめ）は gh pr comment ${{ github.event.pull_request.number }} で1件投稿すること
+            - 新規の変更が無い、または指摘事項が無い場合も、その旨を gh pr comment で短く投稿すること
+
+            レビュー方針:
             - 学習目的なので、バグ指摘だけでなく「より定石的な書き方」「計算量の改善余地」があれば教えること
             - テンプレート由来の未使用ヘルパー関数（ns, nf, nis, abs等）は指摘しないこと
             - コメントは日本語で、初中級者向けに理由から説明すること
